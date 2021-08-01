@@ -1,0 +1,18 @@
+
+.price{
+  width: 60px;
+}
+.catagory{
+  margin-bottom: 10px;
+}
+.catagory div{
+  width: 15%;
+  float: right;
+}
+
+.btn-save-all{
+  float: right;
+ width: 15%;
+  margin-left: 20px;
+}
+

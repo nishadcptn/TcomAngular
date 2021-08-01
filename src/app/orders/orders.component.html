@@ -1,0 +1,203 @@
+<div class="">
+  <div class="headding">
+    <h3>Assign order
+      <mat-spinner *ngIf="spinner ==true" diameter="50" style="float:right"></mat-spinner>
+    </h3>
+  </div>
+
+  <mat-form-field class="loc" *ngIf="utype == 3" style="margin-right: 10px;">
+    <mat-label>Location</mat-label>
+    <mat-select disableRipple [(ngModel)]="selectedloc" [(value)]="selectedloc" (selectionChange)="OnLOcationChange()">
+      <mat-option *ngFor="let item of loc" [(value)]="item.id">{{item.name}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <div class="cards">
+    <div>
+      <div class="large">
+        <mat-form-field class="input-section">
+          <mat-label>Order Status</mat-label>
+          <mat-select disableRipple [(ngModel)]="filter.status" >
+            <mat-option value="1">Initial</mat-option>
+            <mat-option value="2">Shipped</mat-option>
+            <mat-option value="3">Completed</mat-option>
+            <mat-option value="4">Canceled</mat-option>
+            <mat-option value="5">All Pending orders</mat-option>
+          </mat-select>
+          <mat-hint class="hint" *ngIf="eror ==1 && !filter.status">This field is required</mat-hint>
+        </mat-form-field>
+      </div>
+      <div class="large">
+        <mat-form-field class="input-section">
+          <mat-label>Choose a date</mat-label>
+          <input matInput [matDatepicker]="picker" [(ngModel)]="date" >
+          <mat-datepicker-toggle matSuffix [for]="picker">
+            <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+          </mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <mat-hint class="hint" *ngIf="eror ==1 && !date">This field is required</mat-hint>
+
+        </mat-form-field>
+      </div>
+      <div>
+        <button mat-raised-button color="primary" (click)="Filter()">Show</button>
+      </div>
+    </div>
+    <div >
+
+      <div class="large">
+        <mat-form-field class="input-section">
+          <mat-label>Select Delivary Boy</mat-label>
+          <mat-select disableRipple [(value)]="select">
+            <!-- (selectionChange)="seclectionChange()" -->
+            <mat-option *ngFor="let item of delivaryBoy" [(value)]="item.username.id">{{item.username.first_name+" "+item.username.last_name}}</mat-option>
+          </mat-select>
+          <mat-hint class="hint" *ngIf="er ==1 && !select">Select a delivery boy</mat-hint>
+        </mat-form-field>
+      </div>
+
+      <div>
+        <button mat-raised-button color="accent" class="" (click)="AssignOrder()">Assign Order</button>
+      </div>
+
+    </div>
+    </div>
+  </div>
+
+  <div class="row">
+
+    <div class="col">
+      <div class="tbl-container mat-elevation-z8">
+
+        <div class="filter">
+          <mat-form-field class="input">
+            <mat-label>Search</mat-label>
+            <input matInput placeholder="id ,name, description ...etc" (keyup)="applyFilter($event)" #input>
+            <mat-icon matSuffix>search</mat-icon>
+          </mat-form-field>
+        </div>
+
+        <table mat-table [dataSource]="dataSource" class="tables" matSort multiTemplateDataRows>
+
+          <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> #</th>
+            <td mat-cell *matCellDef="let element">
+              <!-- {{element.id}} -->
+              <mat-checkbox [value]="element.id" *ngIf="!element.shipper && element.status!=4" (click)="checkeOrder(element.id)">
+              </mat-checkbox>
+              <mat-checkbox [value]="element.id" *ngIf="element.shipper || element.status == 4" [checked]="true" [disabled]="true">
+              </mat-checkbox>
+            </td>
+          </ng-container>
+
+
+          <ng-container matColumnDef="username">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+            <td mat-cell *matCellDef="let element"> {{element.username.first_name+" "+element.username.last_name}} </td>
+          </ng-container>
+
+           <ng-container matColumnDef="phone">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Phone </th>
+            <td mat-cell *matCellDef="let element"> {{element.address.phone}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="shipper">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Shipper </th>
+            <td mat-cell *matCellDef="let element">
+              <small *ngIf="!element.shipper" color="primary">None</small>
+              <b *ngIf="element.shipper">{{element.shipper.delivary_boy.first_name+"
+                "+element.shipper.delivary_boy.last_name}}</b>
+
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Status</th>
+            <td mat-cell *matCellDef="let element"> 
+              <span class="badge bg-primary" *ngIf="element.status==1">Not Assigned</span>
+                  <span class="badge bg-secondary" *ngIf="element.status==2">Shipped</span>
+                  <span class="badge bg-success" *ngIf="element.status==3">Completed</span>
+                  <span class="badge bg-warning text-dark" *ngIf="element.status==4">Cancelled</span>  
+            </td>
+          </ng-container>
+
+          <!-- <ng-container matColumnDef="delivary_date">
+            <th mat-header-cell *matHeaderCellDef> Delivery Date </th>
+            <td mat-cell *matCellDef="let element">
+
+              <small *ngIf="!element.delivary_date" color="primary">None</small>
+
+            </td>
+          </ng-container> -->
+
+          <ng-container matColumnDef="payment_status">
+            <th mat-header-cell *matHeaderCellDef> Pay-Status  </th>
+            <td mat-cell *matCellDef="let element">
+              <mat-icon aria-hidden="false" aria-label="Example home icon" color="warn"
+                *ngIf="element.payment_status==false">
+                close</mat-icon>
+              <mat-icon aria-hidden="false" aria-label="Example home icon" color="primary"
+                *ngIf="element.payment_status==true">
+                check</mat-icon>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="inv_number">
+            <th mat-header-cell *matHeaderCellDef> No </th>
+            <td mat-cell *matCellDef="let element"> {{element.inv_number}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="total_amount">
+            <th mat-header-cell *matHeaderCellDef> Amount </th>
+            <td mat-cell *matCellDef="let element">
+               {{element.total_amount}} &#8377;
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="shiping_charge">
+            <th mat-header-cell *matHeaderCellDef> Shipping </th>
+            <td mat-cell *matCellDef="let element">
+               {{element.shiping_charge}} &#8377;
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="grand_total">
+            <th mat-header-cell *matHeaderCellDef> Total </th>
+            <td mat-cell *matCellDef="let element">
+              <h4 >{{element.shiping_charge + element.total_amount}} &#8377;</h4>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="payment_type">
+            <th mat-header-cell *matHeaderCellDef> Pay-Type </th>
+            <td mat-cell *matCellDef="let element">
+              <!--  -->
+              <span *ngIf="element.payment_type==0" class="badge bg-primary">COD</span>
+              <span *ngIf="element.payment_type==1" class="badge bg-secondary">UPI</span>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef> Actions </th>
+            <td mat-cell *matCellDef="let element">
+
+              <a mat-stroked-button color="" class="btn" (click)="CancelOrder(element.id)"> Cancel</a> &nbsp;
+              <button mat-raised-button color="primary" class="btn" disableRipple (click)="View(element.id)">View</button>
+
+
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+          <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell" colspan="15">No data matching the filter "{{input.value}}"</td>
+          </tr>
+        </table>
+        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" class="paginator"></mat-paginator>
+      </div>
+
+    </div>
+  </div>
+

@@ -1,0 +1,136 @@
+<div class="">
+  <div class="headding">
+    <h3>Income Report</h3>
+  </div>
+
+  <div class="cards">
+    <div>
+
+      <div class="large">
+        <mat-form-field class="input-section">
+          <mat-label>Start date</mat-label>
+          <input matInput [matDatepicker]="picker" [(ngModel)]="start">
+          <mat-datepicker-toggle matSuffix [for]="picker">
+            <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+          </mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <mat-hint style="color: red;" *ngIf="!start  && error ==1">Choose a date</mat-hint>
+        </mat-form-field>
+
+      </div>
+      <div class="large">
+        <mat-form-field class="input-section">
+          <mat-label>End date</mat-label>
+          <input matInput [matDatepicker]="picker1" [(ngModel)]="end">
+          <mat-datepicker-toggle matSuffix [for]="picker1">
+            <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+          </mat-datepicker-toggle>
+          <mat-datepicker #picker1></mat-datepicker>
+          <mat-hint style="color: red;" *ngIf="!end && error==1">Choose a date</mat-hint>
+        </mat-form-field>
+
+      </div>
+      <div>
+        <button mat-raised-button color="primary" (click)="show()">Show</button>
+      </div>
+    </div>
+    <mat-spinner diameter="80" *ngIf="spinner == true"></mat-spinner>
+  </div>
+
+
+  <div class="row">
+
+
+    <div class="col">
+      <button mat-raised-button color="accent" (click)="export()" class="convert">Covert To XL <mat-icon>description
+      </mat-icon> </button>
+      <button mat-raised-button color="warn" class="convert" printSectionId="print-section" printTitle="Tcom"
+        [useExistingCss]="true" ngxPrint *ngIf="array">Print <mat-icon>print</mat-icon> </button>
+      <div class="mat-elevation-z8">
+
+        <div class="filter">
+          <mat-form-field class="input">
+            <mat-label>Search</mat-label>
+            <input matInput placeholder="id ,name, description ...etc" (keyup)="applyFilter($event)" #input>
+            <mat-icon matSuffix>search</mat-icon>
+          </mat-form-field>
+
+        </div>
+
+        <div class="tbl-container" id="print-section">
+          <table mat-table [dataSource]="dataSource" class="tables" id="tables" matSort>
+
+
+
+            <ng-container matColumnDef="location">
+              <th mat-header-cell *matHeaderCellDef> Area</th>
+              <td mat-cell *matCellDef="let element"> {{element.location}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="total">
+              <th mat-header-cell *matHeaderCellDef> Total Order</th>
+              <td mat-cell *matCellDef="let element"> {{element.total}} </td>
+            </ng-container>
+
+
+            <ng-container matColumnDef="canceled">
+              <th mat-header-cell *matHeaderCellDef> Canceled Order</th>
+              <td mat-cell *matCellDef="let element"> {{element.canceled}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="completed">
+              <th mat-header-cell *matHeaderCellDef> Completed Order</th>
+              <td mat-cell *matCellDef="let element"> {{element.completed}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="pending">
+              <th mat-header-cell *matHeaderCellDef> Pending Order</th>
+              <td mat-cell *matCellDef="let element"> {{element.pending}} </td>
+            </ng-container>
+
+
+            <ng-container matColumnDef="cod_amount">
+              <th mat-header-cell *matHeaderCellDef>COD Amount </th>
+              <td mat-cell *matCellDef="let element"> {{element.cod_amount}} &#8377;</td>
+            </ng-container>
+
+            <ng-container matColumnDef="upi_amount">
+              <th mat-header-cell *matHeaderCellDef> UPI Amount</th>
+              <td mat-cell *matCellDef="let element">
+                {{element.upi_amount}} &#8377;
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="shiping_charge">
+              <th mat-header-cell *matHeaderCellDef> Shipping Charge</th>
+              <td mat-cell *matCellDef="let element">
+                {{element.shiping_charge}} &#8377;
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="amt_total">
+              <th mat-header-cell *matHeaderCellDef> Total Amount</th>
+              <td mat-cell *matCellDef="let element">
+                {{element.upi_amount+element.cod_amount+element.shiping_charge}} &#8377;
+              </td>
+            </ng-container>
+
+
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+
+            <tr class="mat-row" *matNoDataRow>
+              <td class="mat-cell" colspan="11">No data matching the filter "{{input.value}}"</td>
+            </tr>
+          </table>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+
+</div>

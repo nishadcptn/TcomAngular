@@ -1,0 +1,232 @@
+<div class="">
+  <div class="headding">
+    <h3>Products Details
+      <mat-spinner *ngIf="spinner == true" style="float: right; margin-right: 100px;"></mat-spinner>
+    </h3>
+
+  </div>
+
+  <mat-form-field class="" *ngIf="utype == 3" style="margin-right: 10px;">
+    <mat-label>Location</mat-label>
+    <mat-select disableRipple [(ngModel)]="selectedloc" [(value)]="selectedloc" (selectionChange)="OnLOcationChange()">
+      <mat-option *ngFor="let item of loc" [(value)]="item.id">{{item.name}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field class="catagory-select">
+    <mat-label>Select Catagory</mat-label>
+    <mat-select disableRipple (selectionChange)="seclectionChange()" [(value)]="select">
+      <mat-option *ngFor="let item of catagory" [(value)]="item.id">{{item.name}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <div class="row">
+
+    <div class="col-lg-8">
+      <div class="mat-elevation-z8">
+
+        <div class="filter">
+          <mat-form-field class="input">
+            <mat-label>Search</mat-label>
+            <input matInput placeholder="id ,name, description ...etc" (keyup)="applyFilter($event)" #input>
+            <mat-icon matSuffix>search</mat-icon>
+          </mat-form-field>
+        </div>
+
+        <div class="tbl-container">
+          <table mat-table [dataSource]="dataSource" class="tables" id="product-tbl" matSort>
+
+            <ng-container matColumnDef="id">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> id</th>
+              <!-- <td mat-cell *matCellDef="let element"> {{element.id}} </td> -->
+              <td mat-cell *matCellDef="let element; let i = index">{{i + 1}}</td>
+            </ng-container>
+
+
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+              <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="unit">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Unit </th>
+              <td mat-cell *matCellDef="let element">
+                <span *ngIf="!element.unit"> Null</span>
+                <span *ngIf="element.unit"> {{element.unit}}</span>
+
+                </td>
+            </ng-container>
+<!--
+            <ng-container matColumnDef="catagory">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Catagory</th>
+              <td mat-cell *matCellDef="let element"> {{element.catagory}} </td>
+            </ng-container> -->
+
+            <ng-container matColumnDef="price">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Price</th>
+              <td mat-cell *matCellDef="let element"> {{element.price}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="discount">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Discount Price</th>
+              <td mat-cell *matCellDef="let element"> {{element.discount}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="description">
+              <th mat-header-cell *matHeaderCellDef> Description </th>
+              <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="status">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
+              <td mat-cell *matCellDef="let element">
+
+                <mat-icon aria-hidden="false" aria-label="Example home icon" color="warn" *ngIf="element.status==0">
+                  close</mat-icon>
+                <mat-icon aria-hidden="false" aria-label="Example home icon" color="primary" *ngIf="element.status==1">
+                  check</mat-icon>
+
+
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="image">
+              <th mat-header-cell *matHeaderCellDef> image </th>
+              <td mat-cell *matCellDef="let element">
+              <img src="{{url+element.image}}" alt="Error 🧐" width="35px" class="img">
+              </td>
+            </ng-container>
+
+
+            <ng-container matColumnDef="actions">
+              <th mat-header-cell *matHeaderCellDef> Actions </th>
+              <td mat-cell *matCellDef="let element">
+
+                <a mat-button color="" class="btn" (click)="Edit(element.id)">
+                  <mat-icon aria-hidden="false" aria-label="Example home icon" color="accent">border_color</mat-icon>
+                </a>
+                <a mat-button color="" class="btn" (click)="DeleteProduct(element.id)">
+                  <mat-icon aria-hidden="false" aria-label="Example home icon" color="warn">delete</mat-icon>
+                </a>
+
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+            <tr class="mat-row" *matNoDataRow>
+              <td class="mat-cell" colspan="11">No data matching the filter "{{input.value}}"</td>
+            </tr>
+          </table>
+        </div>
+        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" class="paginator"></mat-paginator>
+
+      </div>
+    </div>
+    <!--------------------------------------------------------------------------------------------------------------------------------------->
+    <div class="add">
+      <div class="mat-elevation-z8 add-new">
+        <table  width ="100%" class="tbl-Add">
+          <tr>
+            <td colspan="4" class="sub-head">
+              Products
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <mat-form-field class="example-full-width">
+                <mat-label>Product Name </mat-label>
+                <input type="text" matInput [(ngModel)]="product.name">
+                <mat-hint class="hint" *ngIf="!product.name && eror ==1">Name Required</mat-hint>
+              </mat-form-field>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <mat-form-field class="example-full-width">
+                <mat-label>Unit</mat-label>
+                <mat-select disableRipple [(ngModel)]="product.unit" [(value)]="product.unit">
+                  <mat-option *ngFor="let item of unit" [(value)]="item.id">{{item.unit}}</mat-option>
+                </mat-select>
+                <mat-hint class="hint" *ngIf="!product.unit && eror ==1">Unit Required</mat-hint>
+              </mat-form-field>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <mat-form-field class="example-full-width">
+                <mat-label>Category Name</mat-label>
+                <mat-select disableRipple [(ngModel)]="product.catagory" [(value)]="product.catagory">
+                  <mat-option *ngFor="let item of catagory" [(value)]="item.id">{{item.name}}</mat-option>
+                </mat-select>
+                <mat-hint class="hint" *ngIf="!product.catagory && eror ==1">Category Required</mat-hint>
+              </mat-form-field>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <mat-form-field class="example-full-width">
+                <mat-label>Description </mat-label>
+                <textarea type="text" matInput [(ngModel)]="product.description"></textarea>
+              </mat-form-field>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <mat-form-field class="example-full-width">
+                <mat-label>Price </mat-label>
+                <input type="text" matInput [(ngModel)]="product.price">
+                <mat-hint class="hint" *ngIf="!product.price && eror ==1">Price Required</mat-hint>
+              </mat-form-field>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <mat-form-field class="example-full-width">
+                <mat-label>Tcom Price </mat-label>
+                <input type="text" matInput [(ngModel)]="product.discount">
+                <mat-hint class="hint" *ngIf="!product.discount && eror ==1">Price Required</mat-hint>
+              </mat-form-field>
+            </td>
+          </tr>
+          <tr *ngIf="product.image && image_checker==0">
+            <th>
+              <img src="{{url+product.image}}" alt="Error 🧐" width="100px" class="image" >
+            </th>
+          </tr>
+          <tr>
+            <td>
+              <div class="image-container">
+                <input type="file" (change)="getImage($event)" #inputFile accept="image/*">
+              </div>
+              <small class="hint" *ngIf="image_checker!=1 && eror ==1">Image Required</small>
+
+            </td>
+          </tr>
+          <tr>
+            <td>
+                <mat-form-field class="example-full-width">
+                  <mat-label>Set Status</mat-label>
+                  <mat-select disableRipple [(ngModel)]="product.status" [(value)]="product.status">
+                    <mat-option [(value)]="t">On</mat-option>
+                    <mat-option [(value)]="f">Off</mat-option>
+                  </mat-select>
+                <mat-hint class="hint" *ngIf="!product.status && eror ==1">Status Required</mat-hint>
+                </mat-form-field>
+            </td>
+          </tr>
+          <tr>
+          <tr>
+            <td>
+              <div class="float-right">
+              <button mat-button color="primary" class=" btn-reset" (click)="clear()">Cancel</button>
+              <button mat-raised-button color="primary" class=" btn-save" (click)="AddProduct(method)">Save</button>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

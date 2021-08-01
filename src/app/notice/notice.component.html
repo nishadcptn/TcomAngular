@@ -1,0 +1,119 @@
+<div class="rows">
+  <div class="headding">
+    <h3>Notification
+      <mat-spinner diameter="50" style="float: right;" *ngIf="spinner == true"></mat-spinner>
+    </h3>
+  </div>
+
+  <mat-form-field class="loc" *ngIf="utype == 3" style="margin-right: 10px;">
+    <mat-label>Location</mat-label>
+    <mat-select disableRipple [(ngModel)]="selectedloc" [(value)]="selectedloc" (selectionChange)="OnLOcationChange()">
+      <mat-option *ngFor="let item of loc" [(value)]="item.id">{{item.name}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+<div class="first">
+  <div class="cards" style="width: 100%;">
+    <div>
+      <div class="large">
+        <mat-form-field class="input-section">
+          <mat-label>Title</mat-label>
+          <input matInput [(ngModel)]="noticeDatata.title">
+          <mat-hint class="hint" *ngIf="!noticeDatata.title && eror ==1">This field is required</mat-hint>
+        </mat-form-field>
+      </div>
+      <div class="large">
+        <mat-form-field class="input-section">
+          <mat-label>Notice</mat-label>
+          <textarea matInput rows="1" [(ngModel)]="noticeDatata.condent"></textarea>
+          <mat-hint class="hint" *ngIf="!noticeDatata.condent && eror ==1">This field is required</mat-hint>
+        </mat-form-field>
+      </div>
+
+      <div>
+         <button mat-raised-button color="primary" (click)="PostNotice()">Add</button>
+      </div>
+      <div>
+        <button mat-button  (click)="Clear()" >Cancel</button>
+     </div>
+    </div>
+  </div>
+<div class="tbl-container mat-elevation-z8">
+  <!-- <mat-card *ngFor="let item of notice">
+    <div class="head" > -->
+        <!-- <i class="mdi {{arr[item.id%8]}} text-blue mr-4 icn"></i> -->
+        <!-- <span class="txt">{{item.title}}</span>
+        <span class="date">{{item.date|date}}</span>
+      </div>
+    <div class="contents">
+     <span>{{item.condent}}</span>
+     <span class="delete">
+       <button mat-mini-fab color="none"><mat-icon color="primary" (click)="Edit(item.id)">border_color</mat-icon></button> &nbsp;
+       <button mat-mini-fab color="none" (click)="Delete(item.id)"><mat-icon color="warn">delete</mat-icon></button>
+
+     </span>
+
+    </div>
+  </mat-card> -->
+
+  <div class="filter">
+    <mat-form-field class="input">
+      <mat-label>Search</mat-label>
+      <input matInput placeholder="id ,name, descr...etc" (keyup)="applyFilter($event)" #input>
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+  </div>
+
+  <table mat-table [dataSource]="dataSource" class="tables" matSort id="tables">
+
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> id</th>
+      <!-- <td mat-cell *matCellDef="let element"> {{element.id}} </td> -->
+      <td mat-cell *matCellDef="let element; let i = index">{{i + 1}}</td>
+    </ng-container>
+
+
+    <ng-container matColumnDef="title">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Title </th>
+      <td mat-cell *matCellDef="let element"> {{element.title}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="condent">
+      <th mat-header-cell *matHeaderCellDef> Condent </th>
+      <td mat-cell *matCellDef="let element"> {{element.condent}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="date">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Date </th>
+      <td mat-cell *matCellDef="let element">
+        {{element.date|date}}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef width="20%"> Actions </th>
+      <td mat-cell *matCellDef="let element">
+
+        <a mat-button color="" class="btn" (click)="Edit(element.id)">
+          <mat-icon aria-hidden="false" aria-label="Example home icon" color="accent">border_color</mat-icon>
+        </a>
+        <a mat-button color="" class="btn" (click)="Delete(element.id)">
+          <mat-icon aria-hidden="false" aria-label="Example home icon" color="warn">delete</mat-icon>
+        </a>
+
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+    <tr class="mat-row" *matNoDataRow>
+      <td class="mat-cell" colspan="11">No data Found</td>
+    </tr>
+  </table>
+  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" class="paginator"></mat-paginator>
+
+</div>
+</div>
+
+</div>

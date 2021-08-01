@@ -1,0 +1,121 @@
+<div class="">
+  <div class="headding">
+    <h3>Product Income Report</h3>
+  </div>
+
+
+    <mat-form-field class="loc" *ngIf="utype == 3" style="margin-right: 10px;">
+    <mat-label>Location</mat-label>
+    <mat-select disableRipple [(ngModel)]="selectedloc" [(value)]="selectedloc" (selectionChange)="OnLOcationChange()">
+      <mat-option *ngFor="let item of loc" [(value)]="item.id">{{item.name}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <div class="cards">
+  <div class="">
+    <div class="large">
+      <mat-form-field class="catagory-select">
+        <mat-label>Select Catagory</mat-label>
+        <mat-select disableRipple  [(ngModel)]="select">
+          <mat-option *ngFor="let item of catagory" [(value)]="item.id">{{item.name}}</mat-option>
+        </mat-select>
+        <mat-hint style="color: red;" *ngIf="!select && error==1">Select a category</mat-hint>
+      </mat-form-field>
+    </div>
+    <div class="large">
+      <mat-form-field class="input-section">
+        <mat-label>Start date</mat-label>
+        <input matInput [matDatepicker]="picker"  [(ngModel)]="start" >
+        <mat-datepicker-toggle matSuffix [for]="picker">
+          <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+        </mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-hint style="color: red;" *ngIf="!start && error==1">Choose a date</mat-hint>
+      </mat-form-field>
+    </div>
+    <div class="large">
+      <mat-form-field class="input-section">
+        <mat-label>End date</mat-label>
+        <input matInput [matDatepicker]="picker1"  [(ngModel)]="end" >
+        <mat-datepicker-toggle matSuffix [for]="picker1">
+          <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+        </mat-datepicker-toggle>
+        <mat-datepicker #picker1></mat-datepicker>
+        <mat-hint style="color: red;" *ngIf="!end && error==1">Choose a date</mat-hint>
+      </mat-form-field>
+
+    </div>
+    <div>
+      <button mat-raised-button color="primary" (click)="show()">Show</button>
+    </div>
+  </div>
+  <mat-spinner diameter="80" *ngIf="spinner == true"></mat-spinner>
+  </div>
+
+  <div class="row">
+
+    <div class="col">
+<button mat-raised-button color="accent" (click)="export()" class="convert">Covert To XL <mat-icon>description</mat-icon></button>
+<button mat-raised-button color="warn"  class="convert" printSectionId="print-section" printTitle="Tcom" [useExistingCss]="true" ngxPrint>Print <mat-icon>print</mat-icon></button>
+
+      <div class="mat-elevation-z8">
+
+        <div class="filter">
+          <mat-form-field class="input">
+            <mat-label>Search</mat-label>
+            <input matInput placeholder="id ,name, description ...etc" (keyup)="applyFilter($event)" #input>
+            <mat-icon matSuffix>search</mat-icon>
+          </mat-form-field>
+
+        </div>
+
+        <div class="tbl-container"id="print-section">
+          <table mat-table [dataSource]="dataSource" class="tables" id="tables" matSort>
+
+            <ng-container matColumnDef="product">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Product</th>
+              <td mat-cell *matCellDef="let element"> {{element.product}} </td>
+              <td mat-footer-cell *matFooterCellDef>  Total </td>
+            </ng-container>
+
+            <ng-container matColumnDef="unit">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Unit</th>
+              <td mat-cell *matCellDef="let element"> {{element.unit}} </td>
+              <td mat-footer-cell *matFooterCellDef> </td>
+            </ng-container>
+
+
+            <ng-container matColumnDef="amount">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Amount </th>
+              <td mat-cell *matCellDef="let element"> {{element.amount}} </td>
+              <td mat-footer-cell *matFooterCellDef> {{getTotalAmount()}} &#8377;</td>
+
+            </ng-container>
+
+            <ng-container matColumnDef="qty_sum">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Total Qty</th>
+                <td mat-cell *matCellDef="let element">
+                  {{element.qty_sum}}
+              </td>
+              <td mat-footer-cell *matFooterCellDef>{{getTotalQty()}} </td>
+
+            </ng-container>
+
+
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            <tr mat-footer-row *matFooterRowDef="displayedColumns" class="footer"></tr>
+
+            <tr class="mat-row" *matNoDataRow>
+              <td class="mat-cell" colspan="11">No data matching  "{{input.value}}"</td>
+            </tr>
+
+          </table>
+        </div>
+        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" class="paginator"></mat-paginator>
+
+      </div>
+    </div>
+  </div>
+</div>

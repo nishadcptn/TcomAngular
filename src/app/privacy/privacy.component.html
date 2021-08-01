@@ -1,0 +1,99 @@
+<div class="row">
+  <div class="">
+    <div class="card">
+      <div class="mat-elevation-z8 add-new">
+        <table  width ="100%" class="tbl-Add">
+          <tr>
+            <td colspan="4" class="sub-head">
+             Reset Password
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <mat-form-field class="example-full-width">
+                <mat-label>Curent Password </mat-label>
+                <input type="text" matInput [(ngModel)]="user.password" [type]="hide ? 'password' : 'text'">
+                <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                  <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                  </button>
+                  <mat-hint class="hint" *ngIf="(user.password).length<6 && eror ==1 || eror ==1 && wrong =='Invalid Password'">{{wrong}}</mat-hint>
+              </mat-form-field>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <mat-form-field class="example-full-width">
+                <mat-label>New Password </mat-label>
+                <input type="text" matInput [(ngModel)]="user.newpass" [type]="hide ? 'password' : 'text'">
+                <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                  <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                  </button>
+                  <mat-hint class="hint" *ngIf="(user.newpass).length<6 && eror ==1">password Required</mat-hint>
+              </mat-form-field>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <mat-form-field class="example-full-width">
+                <mat-label>Confirm Password </mat-label>
+                <input type="text" matInput [(ngModel)]="user.confpass" [type]="hide ? 'password' : 'text'">
+                <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                  <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                  </button>
+                  <mat-hint class="hint" *ngIf="!user.confpass && eror ==1 || user.newpass!=user.confpass && eror ==1">Confirm password</mat-hint>
+              </mat-form-field>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="float-right">
+              <button mat-button color="primary" class=" btn-reset" (click)="clear()">Cancel</button>
+              <button mat-raised-button color="primary" class=" btn-save" (click)="ResetApi()">Save</button>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="location">
+    <div class="card">
+      <div class="mat-elevation-z8 add-new">
+       <table width ="100%" class="tbl-Add" celpadding="10">
+         <tr>
+           <th style="padding: 10px; border-bottom: 1px solid #efefef;">
+             UPI Settings
+           </th>
+         </tr>
+           <tr>
+           <td><img src="{{url+location.qr_code}}" alt="Error 🧐" width="100px" class="image"></td>
+         </tr>
+         <tr>
+           <td>
+            <div class="image-container">
+              <input type="file" (change)="getImage($event)" #inputFile accept="image/*">
+            </div>
+           </td>
+         </tr>
+         <tr>
+           <td>
+            <mat-form-field class="example-full-width">
+              <mat-label>Upi Number </mat-label>
+              <input type="text" matInput [(ngModel)]="upiData.upi_number">
+                <mat-hint class="hint" *ngIf="!upiData.upi_number && eror ==1">UPI Number Required</mat-hint>
+            </mat-form-field>
+           </td>
+         </tr>
+         <tr>
+          <td>
+            <div class="float-right">
+            <button mat-raised-button color="primary" class=" btn-save" (click)="UpdateUPI()">Save</button>
+            </div>
+          </td>
+         </tr>
+       </table>
+      </div>
+    </div>
+  </div>
+</div>

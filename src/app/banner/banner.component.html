@@ -1,0 +1,152 @@
+<div class="containers">
+  <div class="headding">
+    <h3>Banner
+      <mat-spinner diameter = "50" style="float: right;"*ngIf="spinner ==true"></mat-spinner>
+    </h3>
+
+
+  </div>
+
+
+  <mat-form-field class="" *ngIf="utype == 3">
+    <mat-label>Location</mat-label>
+    <mat-select disableRipple [(ngModel)]="select" [(value)]="select" (selectionChange)="OnLOcationChange()">
+      <mat-option *ngFor="let item of loc" [(value)]="item.id">{{item.name}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <div class="row">
+
+    <div class="col-lg-8">
+  <div class="mat-elevation-z8">
+
+    <div class="filter">
+      <mat-form-field class="input">
+        <mat-label>Search</mat-label>
+        <input matInput placeholder="id ,name, descr...etc" (keyup)="applyFilter($event)" #input>
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+    </div>
+
+<div class="tbl-container">
+    <table mat-table [dataSource]="dataSource" class="tables" matSort>
+
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> id</th>
+        <!-- <td mat-cell *matCellDef="let element"> {{element.id}} </td> -->
+        <td mat-cell *matCellDef="let element; let i = index">{{i + 1}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="order">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Order Number</th>
+        <td mat-cell *matCellDef="let element"> {{element.order}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="image">
+        <th mat-header-cell *matHeaderCellDef> image </th>
+        <td mat-cell *matCellDef="let element">
+        <img src="{{url+element.image}}" alt="Error 🧐" width="35px" class="img">
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="is_active">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
+        <td mat-cell *matCellDef="let element">
+
+          <mat-icon aria-hidden="false" aria-label="Example home icon" color="warn" *ngIf="element.is_active==false">close</mat-icon>
+          <mat-icon aria-hidden="false" aria-label="Example home icon" color="primary" *ngIf="element.is_active==true">check</mat-icon>
+
+
+        </td>
+      </ng-container>
+
+
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef width="20%"> Actions </th>
+        <td mat-cell *matCellDef="let element">
+
+          <a mat-button color="" class="btn" (click)="Edit(element.id)">
+            <mat-icon aria-hidden="false" aria-label="Example home icon" color="accent">border_color</mat-icon>
+          </a>
+          <a mat-button color="" class="btn" (click)="DeleteBanner(element.id)">
+            <mat-icon aria-hidden="false" aria-label="Example home icon" color="warn">delete</mat-icon>
+          </a>
+
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" colspan="11">No data matching the filter "{{input.value}}"</td>
+      </tr>
+    </table>
+  </div>
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" class="paginator"></mat-paginator>
+
+  </div>
+
+</div>
+    <!--------------------------------------------------------------------------------------------------------------------------------------->
+    <div class="add">
+      <div class="mat-elevation-z8 add-new">
+        <table  width ="100%" class="tbl-Add">
+          <tr>
+            <td colspan="4" class="sub-head">
+              Banner
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <mat-form-field class="example-full-width">
+                <mat-label>Order Number </mat-label>
+                <input type="text" matInput [(ngModel)]="banner.order">
+                <mat-hint class="hint" *ngIf="!banner.order && eror==1">This field is required</mat-hint>
+              </mat-form-field>
+            </td>
+          </tr>
+          <tr>
+          </tr>
+          <tr *ngIf="banner.image && image_checker==0">
+            <th>
+              <img src="{{url+banner.image}}" alt="Error 🧐" width="100px" class="image">
+            </th>
+          </tr>
+          <tr *ngIf="method=='post'">
+            <td>
+              <div class="image-container">
+                <input type="file" (change)="getImage($event)" #inputFile accept="image/*">
+              </div>
+              <small class="hint" *ngIf="image_checker!=1 && eror==1">image required</small>
+
+          </tr>
+
+          <tr>
+            <td>
+              <mat-form-field class="example-full-width">
+                <mat-label>Set Status</mat-label>
+                <mat-select disableRipple [(ngModel)]="banner.is_active"[(value)]="banner.is_active" >
+                  <mat-option [(value)]="t">On</mat-option>
+                  <mat-option [(value)]="f">Off</mat-option>
+                </mat-select>
+                <mat-hint class="hint" *ngIf="!banner.is_active && eror==1">Status required</mat-hint>
+              </mat-form-field>
+            </td>
+          </tr>
+
+          <tr>
+          <tr>
+            <td>
+              <div class="float-right">
+              <button mat-button color="primary" class=" btn-reset" (click)="clear()">Cancel</button> &nbsp;
+              <button mat-raised-button color="primary" class=" btn-save" (click)="AddBanner(method)">Save</button>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+</div>
+</div>

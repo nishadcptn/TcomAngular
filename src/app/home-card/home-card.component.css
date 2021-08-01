@@ -1,0 +1,47 @@
+
+.del-card table tr:hover{
+  background-color: #efefef;
+}
+mat-progress-bar{
+  margin-top: 5px;
+  margin-left: 10px;
+  margin-right: 10px;
+  height: 10px;
+  border-radius: 5px;
+}
+.pending{
+  background-color: black;
+}
+.blank{
+  margin-top: 5px;
+  height: 10px;
+}
+.del-card{
+  width: 100%;
+}
+.tables{
+  width: 100%;
+
+}
+.col-sm-6{
+  cursor: pointer;
+}
+.mb-1{
+  color: #fff;
+}
+h3{
+  color: #fff;
+}
+.mat-cell{
+  padding: 10px;
+}
+.navigate{
+  float: right;
+  cursor: pointer;
+}
+
+@media only screen and (max-width: 900px){
+  .recent{
+    overflow-x: scroll;
+  }
+}

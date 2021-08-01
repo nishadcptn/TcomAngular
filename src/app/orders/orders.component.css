@@ -1,0 +1,81 @@
+
+tr.example-detail-row {
+  background-color: #efefef;
+  height: 0;
+}
+
+tr.example-element-row:not(.example-expanded-row):hover {
+  background: whitesmoke;
+}
+
+tr.example-element-row:not(.example-expanded-row):active {
+  background: #efefef;
+}
+
+.example-element-row td {
+  border-bottom-width: 0;
+}
+
+.example-element-detail {
+
+  overflow: hidden;
+  display: flex;
+}
+.tables{
+  width: 100%;
+  word-break: break-word;
+  border-top: 1px solid #efefef;
+}
+.tables tr th{
+  font-size: 15px;
+}
+.input{
+  width: 100%;
+}
+.hint{
+  color: red;
+}
+.btn{
+  padding: 1px;
+}
+.cards{
+  display: flex;
+  flex-direction: row;
+  height: 90px;
+  margin-bottom: 20px;
+}
+.cards div{
+  flex: 1;
+  margin: 10px;
+  display: flex;
+  flex-direction: row;
+}
+.loc{
+  margin-left: 20px;
+}
+.cards div div{
+  flex: 1;
+  padding: 3px;
+}
+.cards div .large{
+ flex: 2;
+}
+.cards div div button{
+  width: 100%;
+}
+.cards div div .input-section{
+  width: 100%;
+}
+.complete{
+  background-color: rgba(255, 0, 0, 0.219);
+}
+.cancel{
+background-color: #fff;
+
+}
+.completebtn{
+  opacity: 0;
+}
+.cancelbtn{
+  opacity: 0;
+}

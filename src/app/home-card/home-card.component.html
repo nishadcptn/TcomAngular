@@ -1,0 +1,187 @@
+
+  <div class="row">
+    <div class="col-xl-3 col-sm-6" (click)="TotalOrders()">
+      <div class="card widget-block p-4 rounded bg-primary border">
+        <div class="card-body">
+          <h1 class="mb-1">{{datas.total_order}}</h1>
+          <h3>Total Orders</h3>
+          <div class="blank"></div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-3 col-sm-6" (click)="CompletedOrders()">
+      <div class="card widget-block p-4 rounded bg-success border">
+        <div class="card-body">
+          <h1 class="mb-1">{{datas.completed}}</h1>
+          <h3>Completed Orders</h3>
+          <mat-progress-bar mode="determinate" [value]="datas.completed/datas.total_order*100" color="warn"> </mat-progress-bar>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-3 col-sm-6" (click)="PendingOrders()">
+      <div class="card widget-block p-4 rounded bg-secondary border">
+        <div class="card-body">
+          <h1 class="mb-1">{{datas.pending}}</h1>
+          <h3>Pending Orders</h3>
+          <mat-progress-bar mode="determinate" [value]="datas.pending/datas.total_order*100" color="accent" class="pending"></mat-progress-bar>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-3 col-sm-6">
+      <div class="card widget-block p-4 rounded bg-warning border">
+        <div class="card-body">
+          <h1 class="mb-1" *ngIf="datas.total" >{{datas.total}} &#8377;</h1>
+          <h1 class="mb-1" *ngIf="!datas.total">0.0 &#8377;</h1>
+          <h3 style="color: #fff;">Total Amount</h3>
+          <div class="blank"></div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+<div class="row">
+
+<div class="col" style="margin-bottom: 15px;">
+  <!-- Top Sell Table -->
+  <div class="card " id="recent-orders">
+    <div class="card-header justify-content-between">
+      <h2>Delivery Details
+      <mat-icon class="navigate" routerLink="deliveryreport/">navigate_next</mat-icon>
+      </h2>
+      </div>
+      <div class="del-card">
+        <table mat-table [dataSource]="dataSourceSecond" class="tables" id="dreport">
+
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef width="35%"> Name </th>
+            <td mat-cell *matCellDef="let element"> {{element.first_name+" "+element.last_name}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="total">
+            <th mat-header-cell *matHeaderCellDef width="15%"> Total</th>
+            <td mat-cell *matCellDef="let element">
+              {{element.total}}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="completed">
+            <th mat-header-cell *matHeaderCellDef width="25%"> Completed</th>
+            <td mat-cell *matCellDef="let element">
+              {{element.completed}}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="amount">
+            <th mat-header-cell *matHeaderCellDef width="25%"> Amount</th>
+            <td mat-cell *matCellDef="let element">
+              <h4 mat-button color="primary" *ngIf="!element.amount">0.0 &#8377;</h4>
+              <h4 *ngIf="element.amount">{{element.amount}} &#8377;</h4>
+
+            </td>
+          </ng-container>
+
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumnsSecond"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumnsSecond;" [ngClass]="{'make-gold': row.shipper }"></tr>
+
+        </table>
+      </div>
+      </div>
+</div>
+
+
+<div class="col-lg col-12">
+  <!-- Recent Order Table -->
+  <div class="card " id="recent-orders">
+    <div class="card-header justify-content-between">
+      <h2>Recent Orders
+        <mat-icon class="navigate" routerLink="orders/"  >navigate_next</mat-icon>
+      </h2>
+    </div>
+    <div class="recent">
+
+
+      <table mat-table [dataSource]="dataSource" class="tables" matSort>
+
+        <ng-container matColumnDef="username">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> User </th>
+          <td mat-cell *matCellDef="let element"> {{element.username.first_name+" "+element.username.last_name}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="shipper">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Shipper</th>
+          <td mat-cell *matCellDef="let element">
+            <small *ngIf="!element.shipper" color="primary">None</small>
+            <span *ngIf="element.shipper">{{element.shipper.delivary_boy.first_name+"
+              "+element.shipper.delivary_boy.last_name}}</span>
+
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="date">
+          <th mat-header-cell *matHeaderCellDef> Date </th>
+          <td mat-cell *matCellDef="let element">
+            {{element.date|date}}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
+          <td mat-cell *matCellDef="let element">
+            <span class="badge bg-primary" *ngIf="element.status==1">Not Assigned</span>
+            <span class="badge bg-secondary" *ngIf="element.status==2">Shipped</span>
+            <span class="badge bg-success" *ngIf="element.status==3">Completed</span>
+            <span class="badge bg-warning text-dark" *ngIf="element.status==4">Cancelled</span>
+          </td>
+        </ng-container>
+<!--
+        <ng-container matColumnDef="payment_status">
+          <th mat-header-cell *matHeaderCellDef> Payment  </th>
+          <td mat-cell *matCellDef="let element">
+            <mat-icon aria-hidden="false" aria-label="Example home icon" color="warn"
+              *ngIf="element.payment_status==false">
+              close</mat-icon>
+            <mat-icon aria-hidden="false" aria-label="Example home icon" color="primary"
+              *ngIf="element.payment_status==true">
+              check</mat-icon>
+          </td>
+        </ng-container> -->
+
+        <ng-container matColumnDef="inv_number">
+          <th mat-header-cell *matHeaderCellDef> No </th>
+          <td mat-cell *matCellDef="let element"> {{element.inv_number}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="total_amount">
+          <th mat-header-cell *matHeaderCellDef> Total </th>
+          <td mat-cell *matCellDef="let element" width="10%">
+            <h5> {{element.total_amount}}&#8377;</h5>
+          </td>
+        </ng-container>
+
+
+        <ng-container matColumnDef="phone">
+          <th mat-header-cell *matHeaderCellDef> Phone </th>
+          <td mat-cell *matCellDef="let element">
+            {{element.address.phone}}
+          </td>
+        </ng-container>
+
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+      </table>
+
+    </div>
+  </div>
+</div>
+
+</div>
+
+<div class="row">
+
+</div>

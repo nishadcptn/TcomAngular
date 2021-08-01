@@ -1,0 +1,7 @@
+{
+  "*": {
+      "target": "http://vineetharion.pythonanywhere.com/",
+      "secure": false,
+      "logLevel": "debug"
+  }
+}

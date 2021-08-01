@@ -1,0 +1,129 @@
+/* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body {
+   margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  /* background: linear-gradient(to right, #ddda1a, rgba(251, 255, 0, 0.719)) !important; */
+  font-family: 'Montserrat', sans-serif;
+ }
+.mat-header-cell{
+  font-family:  sans-serif;
+  font-size: large;
+  color: rgba(0, 0, 0, 0.712);
+}
+mat-header-cell{
+  font-family:  sans-serif;
+  font-size: large;
+  color: rgba(0, 0, 0, 0.712);
+}
+.mat-cell{
+  font-family: 'Montserrat', sans-serif;
+}
+.spinner{
+  padding-right: 50px;
+}
+input[type=file]{
+  font-family: sans-serif;
+}
+.tables{
+  width: 100%;
+  border-top: 1px solid #efefef;
+}
+.input{
+  width: 100%;
+}
+.add{
+  width:300px
+}
+
+small{
+  color: red;
+}
+.headding{
+  padding: 20px;
+  width: 100%;
+  margin-bottom: 30px;
+  color: rgba(0, 0, 0, 0.52);
+}
+
+.example-full-width{
+ width: 100%;
+}
+.make-gold{
+  background-color: yellow;
+}
+.tbl-Add tr td{
+  padding: 10px;
+}
+.tbl-Add{
+  margin-bottom: 20px;
+}
+.add-new{
+  padding-left: 5px;
+  padding-right: 5px;
+  background-color: #fff;
+}
+.filter{
+  background-color: #fff;
+  padding: 10px 20px;
+}
+.radio{
+  margin-left: 20px;
+  margin-right: 10px;
+}
+.sub-head{
+  color: rgba(0, 0, 0, 0.534);
+  font-weight: bold;
+  border-bottom: 1px solid #efefef;
+}
+.btn-save{
+  margin-bottom: 10px;
+}
+.image-container{
+  border: 2px solid rgba(0, 0, 255, 0.39);
+}
+.image-container input{
+  color: rgba(0, 0, 0, 0.733);
+}
+::-webkit-file-upload-button{
+  background-color: rgba(0, 0, 255, 0.39);
+  width: 50%;
+  padding: 5px;
+  margin-right: 20px;
+  color: #fff;
+  border-radius: 0;
+  border: none;
+}
+.float-right{
+  float: right;
+}
+.btn-save{
+  padding: 0px 40px;
+  margin-left: 10px;
+}
+.image{
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100px;
+}
+
+.location{
+  margin-left: 20px;
+}
+.mat-form-field-appearance-legacy .mat-hint{
+  color: red;
+}
+small{
+  color: red;
+}
+
+@media only screen and (max-width: 950px){
+  .add-new{
+    display: none;
+  }
+  .tbl-container{
+    overflow: scroll;
+  }
+}

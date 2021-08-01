@@ -1,0 +1,172 @@
+<div class="">
+  <div class="headding">
+    <h3>Area Admins
+      <mat-spinner diameter ="50" *ngIf="spinner == true" style="float: right;"></mat-spinner>
+    </h3>
+  </div>
+
+  <div class="row">
+
+    <div class="col-lg-8">
+      <div class="mat-elevation-z8">
+
+        <div class="filter">
+          <mat-form-field class="input">
+            <mat-label>Search</mat-label>
+            <input matInput placeholder="id ,name, description ...etc" (keyup)="applyFilter($event)" #input>
+            <mat-icon matSuffix>search</mat-icon>
+          </mat-form-field>
+        </div>
+
+        <div class="tbl-container">
+          <table mat-table [dataSource]="dataSource" class="tables" matSort>
+
+            <ng-container matColumnDef="id">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> id</th>
+              <!-- <td mat-cell *matCellDef="let element"> {{element.id}} </td> -->
+              <td mat-cell *matCellDef="let element; let i = index">{{i + 1}}</td>
+            </ng-container>
+
+
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+              <td mat-cell *matCellDef="let element"> {{element.username.first_name}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="location">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Area </th>
+              <td mat-cell *matCellDef="let element"> {{element.location.name}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="upi">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> UPI Number </th>
+              <td mat-cell *matCellDef="let element"> {{element.location.upi_number}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="phone">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Phone </th>
+              <td mat-cell *matCellDef="let element">
+                 {{element.phone}}
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="action">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Action</th>
+              <td mat-cell *matCellDef="let element">
+                <button mat-stroked-button (click)="Change(element.username.id)" color="warn">Delete</button>
+                <!-- {{element.username.is_active}}  -->
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="{'make-gold': row.username.is_active==false }"></tr>
+
+            <tr class="mat-row" *matNoDataRow>
+              <td class="mat-cell" colspan="11">No data matching the filter "{{input.value}}"</td>
+            </tr>
+          </table>
+        </div>
+        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" class="paginator"></mat-paginator>
+
+      </div>
+    </div>
+    <!--------------------------------------------------------------------------------------------------------------------------------------->
+    <div class="add">
+      <div class="mat-elevation-z8 add-new">
+        <table  width ="100%" class="tbl-Add">
+          <tr>
+            <td colspan="4" class="sub-head">
+              Register
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <mat-form-field class="example-full-width">
+                <mat-label> Name </mat-label>
+                <input type="text" matInput [(ngModel)]="user.name">
+                <mat-hint class="hint" *ngIf="!user.name && eror ==1">Name Required</mat-hint>
+              </mat-form-field>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <mat-form-field class="example-full-width">
+                <mat-label>Username </mat-label>
+                <input type="text" matInput [(ngModel)]="user.username">
+                <mat-hint class="hint" *ngIf="!user.username && eror ==1">Username Required</mat-hint>
+              </mat-form-field>
+              <small *ngIf="error.username">
+                {{error.username}}
+              </small>
+            </td>
+          </tr>
+          <tr >
+            <td>
+              <mat-form-field class="example-full-width" *ngIf="utype == 3" style="margin-right: 10px;">
+                <mat-label>Location</mat-label>
+                <mat-select disableRipple [(ngModel)]="user.location" [(value)]="user.location">
+                  <mat-option *ngFor="let item of loc" [(value)]="item.id">{{item.name}}</mat-option>
+                </mat-select>
+                <mat-hint class="hint" *ngIf="!user.location && eror ==1">Location Required</mat-hint>
+              </mat-form-field>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <mat-form-field class="example-full-width">
+                <mat-label>Phone </mat-label>
+                <input type="text" matInput [(ngModel)]="user.phone">
+                <mat-hint class="hint" *ngIf="(user.phone).length<10 && eror ==1 || eror ==1 && (user.phone).length>10">Enter a valid Phone number</mat-hint>
+              </mat-form-field>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <mat-form-field class="example-full-width">
+                <mat-label>Gender</mat-label>
+                <mat-select disableRipple [(ngModel)]="user.gender" [(value)]="user.gender">
+                  <mat-option  value="male">Male</mat-option>
+                  <mat-option  value="female">Female</mat-option>
+                  <mat-option  value="other">Other</mat-option>
+                </mat-select>
+                <mat-hint class="hint" *ngIf="!user.gender && eror ==1">Select Gender</mat-hint>
+              </mat-form-field>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <mat-form-field class="example-full-width">
+                <mat-label>Password </mat-label>
+                <input type="text" matInput [(ngModel)]="user.password" [type]="hide ? 'password' : 'text'">
+                <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                  <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                  </button>
+                  <mat-hint class="hint" *ngIf="!user.password && eror ==1 || eror ==1 && (user.password).length < 6">Password Required morethan 6 Charecters</mat-hint>
+              </mat-form-field>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <mat-form-field class="example-full-width">
+                <mat-label>Confirm Password </mat-label>
+                <input type="text" matInput [(ngModel)]="user.confpass" [type]="hide ? 'password' : 'text'">
+                <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                  <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                  </button>
+                  <mat-hint class="hint" *ngIf="!user.confpass && eror ==1 || user.password!=user.confpass && eror ==1">Confirm password</mat-hint>
+              </mat-form-field>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="float-right">
+              <button mat-button color="primary" class=" btn-reset" (click)="clear()">Cancel</button>
+              <button mat-raised-button color="primary" class=" btn-save" (click)="Register(method)">Save</button>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
