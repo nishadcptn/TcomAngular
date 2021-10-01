@@ -8,14 +8,14 @@ import { Observable } from 'rxjs';
 })
 export class ApiService {
 
-  baseurl = "https://tcom-python.herokuapp.com/";
-  url = "https://tcom-python.herokuapp.com";
+  // baseurl = "https://tcom-python.herokuapp.com/";
+  // url = "https://tcom-python.herokuapp.com";
 
   // baseurl = "http://tcomdelivery.in:8000/";
   // url = "http://tcomdelivery.in:8000";
 
-  // url = "http://127.0.0.1:8000";
-  // baseurl = "http://127.0.0.1:8000/";
+  url = "http://127.0.0.1:8000";
+  baseurl = "http://127.0.0.1:8000/";
   httpHeaders = new HttpHeaders({ 'Content-type': 'application/json' })
   httpHeadersForm = new HttpHeaders({ 'Content-type': 'multipart/form-data' })
   httpHeadersPublic = new HttpHeaders({ 'Content-type': 'application/json','key':'null' })
